@@ -9,10 +9,7 @@ const ReadData = () => {
   const [radioData, setRadiodata] = useState("");
   const [id, setid] = useState();
   const dispatch = useDispatch();
-
   const { users, loading, searchData } = useSelector((state) => state.crud);
-
-  console.log(users, "hi");
 
   useEffect(() => {
     dispatch(Readuser());
@@ -25,6 +22,41 @@ const ReadData = () => {
     <>
       <div className="card w-50 mx-auto mt-3 my-2">
         {show && <Modals id={id} setshow={setshow} show={show} />}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+                  <input
+                    name="gender"
+                    className="form-check-input"
+                    type="radio"
+                    value="All"
+                    checked={radioData === ""}
+                    onChange={(e)=>{
+                      setRadiodata("")
+                    }}
+                  />
+                  <label className="form-check-label">All</label>
+                  <input
+                    name="gender"
+                    className="form-check-input"
+                    type="radio"
+                    value="Male"
+                    checked={radioData === "Male"}
+                    onChange={(e)=>{
+                      setRadiodata(e.target.value)
+                    }}
+                  />
+                  <label className="form-check-label">Male</label>
+                  <input
+                    name="gender"
+                    className="form-check-input"
+                    type="radio"
+                    value="Female"
+                    checked={radioData === "Female"}
+                    onChange={(e)=>{
+                      setRadiodata(e.target.value)
+                    }}
+                  />
+                  <label className="form-check-label">Female</label>
+                </div>
         {users &&
           users.data
             ?.filter((item) => {
@@ -35,7 +67,16 @@ const ReadData = () => {
                   ?.toLowerCase()
                   .includes(searchData.toLowerCase());
               }
+            }).filter((item)=>{
+              if(radioData === "Male"){
+                return item.gender === radioData
+              } else if(radioData === 'Female'){
+                return item.gender === radioData
+              } else{
+                return item
+              }
             })
+
             .map((item, index) => (
               <div className="card-body" key={index}>
                 <h5 className="card-title">{item.name}</h5>
@@ -46,7 +87,7 @@ const ReadData = () => {
                 <button
                   onClick={() => {
                     setshow(true);
-                    setid(index);
+                    setid(item.id);
                   }}
                   className="card-link"
                 >

@@ -25,8 +25,6 @@ const Update = () => {
     return(<h2>Loading</h2>)
   }
 
-  console.log(update && update, "hello update");
-
   const newdata = (e) => {
     const { name, value } = e.target;
     setUpdate({ ...update, [name]: value });

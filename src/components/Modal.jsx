@@ -4,6 +4,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const style = {
   position: 'absolute',
@@ -18,8 +20,19 @@ const style = {
 };
 
 export default function Modals({id, setshow, show}) {
-    console.log(id)
+    const [data, setData] = useState([])
+    const {users, loading} = useSelector((state)=> state.crud)
+    
+    useEffect(()=>{
+     if(id){
+      const singleuser = users.data.filter((item)=>item.id === id)
+      setData(singleuser[0])
+     }
+    })
 
+    if(loading){
+      return <h2>Loading...</h2>
+    }
 
   return (
     <div>
@@ -31,10 +44,12 @@ export default function Modals({id, setshow, show}) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+          {data.name}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+           {data.email}<br />
+           {data.age}<br />
+           {data.gender}
           </Typography>
         </Box>
       </Modal>
